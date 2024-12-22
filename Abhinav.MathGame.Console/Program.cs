@@ -13,7 +13,7 @@ Start:
 
 Console.WriteLine(); // code for new line for formatting
 
-Console.Write("Enter your difficulty level(1 - 100): ");
+Console.Write("Enter your difficulty level(1 - 10): ");
 string userInputDifficulty = Console.ReadLine();
 
 //Code to check for invalid input for difficulty by user
@@ -39,44 +39,24 @@ Invalid:
 
 Console.Write("\nEnter the operations that you want to play with(+,-,*,/): ");
 string operations = Console.ReadLine();
-int whichGameToChoose;
-
-// Assigning number to operators for following switch statement
-if (operations == "+")
-{
-    whichGameToChoose = 1;
-}
-else if (operations == "-")
-{
-    whichGameToChoose = 2;
-}
-else if (operations == "*")
-{
-    whichGameToChoose = 3;
-}
-else if (operations == "/")
-{
-    whichGameToChoose = 4;
-}
-else
-{
-    Console.WriteLine("Invalid Input!");
-    goto Invalid;
-}
 
 Console.WriteLine(); 
 
 //switch statement to direct user to proper segement based on selected operator
-switch(whichGameToChoose)
+switch(operations)
 {
-    case 1:
+    case "+":
         goto Addition;
+    case "-":
+        goto Subtraction;
 }
 
 Addition:
 
-int firstNumToAdd = randomInt.Next(1, 10) * difficulty;
-int secondNumToAdd = randomInt.Next(1, 10) * difficulty;
+int additionDifficulty = difficulty ^ 2; // squaring difficulty to make addition harder
+
+int firstNumToAdd = randomInt.Next(1, 10) * additionDifficulty;
+int secondNumToAdd = randomInt.Next(1, 10) * additionDifficulty;
 int sum = firstNumToAdd + secondNumToAdd;
 
 Console.Write($"What is {firstNumToAdd} + {secondNumToAdd}?: ");
@@ -125,6 +105,14 @@ else
 {
     Environment.Exit(0);
 }
+
+Subtraction:
+
+int subtractionDifficulty = difficulty ^ 2; // squaring difficulty to make addition harder
+
+int firstNumToSubtract = randomInt.Next(1, 10) * subtractionDifficulty;
+int secondNumToSubtract = randomInt.Next(1, 10) * subtractionDifficulty;
+int difference = Math.Abs(firstNumToAdd + secondNumToAdd);
 
 
 
