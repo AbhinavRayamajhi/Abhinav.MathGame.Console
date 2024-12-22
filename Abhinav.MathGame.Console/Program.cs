@@ -27,14 +27,14 @@ else
     goto Start;
 }
 
-if (difficulty < 1 | difficulty > 100) // Checking for valid difficulty input
+if (difficulty < 1 | difficulty > 10) // Checking for valid difficulty input
 {
     Console.WriteLine("Invalid Difficulty.\n");
     goto Start;
 }
 
 difficulty--; // subtract difficulty to make level 100 harder and troll user by setting level 1 as 0 + 0, 0 - 0 and so on and also give 0 score for level one
-
+Console.WriteLine(difficulty);
 Invalid:
 
 Console.Write("\nEnter the operations that you want to play with(+,-,*,/): ");
@@ -53,18 +53,18 @@ switch(operations)
 
 Addition:
 
-int additionDifficulty = difficulty ^ 2; // squaring difficulty to make addition harder
+int additionDifficulty = difficulty * difficulty; // squaring difficulty to make addition harder
 
 int firstNumToAdd = randomInt.Next(1, 10) * additionDifficulty;
 int secondNumToAdd = randomInt.Next(1, 10) * additionDifficulty;
 int sum = firstNumToAdd + secondNumToAdd;
 
 Console.Write($"What is {firstNumToAdd} + {secondNumToAdd}?: ");
-string userAnswer = Console.ReadLine();
+string userAdditionAnswer = Console.ReadLine();
 Console.WriteLine(); 
 
 //checking for invalid input for answer by user
-if (int.TryParse(userAnswer, out answer))
+if (int.TryParse(userAdditionAnswer, out int additionAnswer))
 {
 }
 else
@@ -74,7 +74,7 @@ else
 }
 
 //checking if user answer is correct 
-if (answer == sum)
+if (additionAnswer == sum)
 {
     Console.WriteLine($"Correct answer. {firstNumToAdd} + {secondNumToAdd} = {sum}.");
     score += difficulty; // incrementing score based on difficulty
@@ -84,10 +84,54 @@ if (answer == sum)
 
 else
 {
-    Console.WriteLine("Wrong Answer. :(");
+    Console.WriteLine($"Wrong Answer :(. {firstNumToAdd} + {secondNumToAdd} = {sum}");
+    goto Retry;
 }
 
-goto Retry;
+Subtraction:
+
+int subtractionDifficulty = difficulty * difficulty; // squaring difficulty to make addition harder
+
+int firstNumToSubtract = randomInt.Next(1, 10) * subtractionDifficulty;
+int secondNumToSubtract = randomInt.Next(1, 10) * subtractionDifficulty;
+
+if (secondNumToSubtract > firstNumToSubtract) // Swapping the numbers if second number is greater than first number to avoid negative numbers
+{
+    int temp = firstNumToSubtract;
+    firstNumToSubtract = secondNumToSubtract;
+    secondNumToSubtract = temp;
+}
+
+// following same as addition
+int difference = firstNumToSubtract - secondNumToSubtract;
+
+Console.Write($"What is {firstNumToSubtract} - {secondNumToSubtract}?: ");
+string userSubtractionAnswer = Console.ReadLine();
+Console.WriteLine();
+
+//checking for invalid input for answer by user
+if (int.TryParse(userSubtractionAnswer, out int subtractionAnswer))
+{
+}
+else
+{
+    Console.WriteLine("Invalid Input!\n");
+    goto Subtraction;
+}
+
+if (subtractionAnswer == difference)
+{
+    Console.WriteLine($"Correct answer. {firstNumToSubtract} - {secondNumToSubtract} = {difference}.");
+    score += difficulty; // incrementing score based on difficulty
+    Console.WriteLine($"Your score is {score}.\n");
+    goto Subtraction;
+}
+
+else
+{
+    Console.WriteLine($"Wrong Answer :(. {firstNumToSubtract} - {secondNumToSubtract} = {difference}");
+    goto Retry;
+}
 
 Retry:
 
@@ -105,14 +149,3 @@ else
 {
     Environment.Exit(0);
 }
-
-Subtraction:
-
-int subtractionDifficulty = difficulty ^ 2; // squaring difficulty to make addition harder
-
-int firstNumToSubtract = randomInt.Next(1, 10) * subtractionDifficulty;
-int secondNumToSubtract = randomInt.Next(1, 10) * subtractionDifficulty;
-int difference = Math.Abs(firstNumToAdd + secondNumToAdd);
-
-
-
