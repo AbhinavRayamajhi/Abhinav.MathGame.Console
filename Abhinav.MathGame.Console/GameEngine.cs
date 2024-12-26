@@ -34,15 +34,16 @@
             {
                 if (operatorChoice == "Division")
                 {
-                    List<int> divisionNumbers = Helper.GenerateDivisionNumbers();
+                    List<int> divisionNumbers = Helper.GenerateDivisionNumbers(difficulty);
                     firstNum = divisionNumbers[0];
                     secondNum = divisionNumbers[1];
                 }
                 else
                 {
-                    firstNum = randInt.Next(1, 10);
-                    secondNum = randInt.Next(1, 10);
+                    firstNum = randInt.Next(1 + difficulty, 10 + 9 * difficulty);
+                    secondNum = randInt.Next(1 + difficulty, 10 + 9 * difficulty);
                 }
+
                 Console.WriteLine($"What is {firstNum} {operatorDict[operatorChoice]} {secondNum}?: ");
                 int userAnswer = Helper.ValidateAnswer(Console.ReadLine());
 
@@ -58,7 +59,14 @@
                 if (userAnswer == correctAnswer)
                 {
                     Console.WriteLine($"Correct answer. {firstNum} {operatorDict[operatorChoice]} {secondNum} = {correctAnswer}. \n");
-                    score++;
+                    score += difficulty * operatorChoice switch
+                    {
+                        "Addition" => 5,
+                        "Subtraction" => 7,
+                        "Multiplication" => 20,
+                        "Division" => 10,
+                        _ => 0
+                    };
                     currentGameHistory.Add($"{firstNum} {operatorDict[operatorChoice]} {secondNum} = {correctAnswer}");
 
                 }
@@ -67,9 +75,10 @@
                     Console.WriteLine($"Wrong Answer :(. {firstNum} {operatorDict[operatorChoice]} {secondNum} = {correctAnswer}");
                     Console.Write($"Game Over! Final score was {score}. Press any key to continue...");
 
-                    currentGameHistory.Add($"{firstNum} {operatorDict[operatorChoice]} {secondNum} = {userAnswer} was incorrect. Correct answer is {correctAnswer} \n");
-                    Helper.fullGameHistory.Add(currentGameHistory);
-                    currentGameHistory.Clear();
+                    currentGameHistory.Add($"{firstNum} {operatorDict[operatorChoice]} {secondNum} = {userAnswer} was incorrect. Correct answer is {correctAnswer}.");
+                    currentGameHistory.Add($"Final score was {score}. \n");
+                    Helper.AddHistory(currentGameHistory);
+                    currentGameHistory = [];
 
                     score = 0;
                     gameOver = true;

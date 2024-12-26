@@ -1,8 +1,10 @@
-﻿namespace MathGame
+﻿using System.ComponentModel;
+
+namespace MathGame
 {
     internal class Helper
     {
-        internal static List<List<string>> fullGameHistory = new();
+        private static List<List<string>> fullGameHistory = new();
 
         internal static int ValidateAnswer(string? userString)
         {
@@ -31,20 +33,19 @@
             Console.Clear();
         }
 
-        internal static List<int> GenerateDivisionNumbers()
+        internal static List<int> GenerateDivisionNumbers(int difficulty)
         {
             Random randInt = new();
-            int firstNum = randInt.Next(1, 99);
-            int secondNum = randInt.Next(1, 99);
+            int firstNum;
+            int secondNum;
+
+            do
+            {
+                firstNum = randInt.Next(1 + (9 * difficulty), 99 + (9 * difficulty));
+                secondNum = randInt.Next(1, 99) + difficulty;
+            } while (firstNum % secondNum != 0);
 
             List<int> result = new(2);
-
-            while(firstNum % secondNum != 0)
-            {
-                firstNum = randInt.Next(1, 99);
-                secondNum = randInt.Next(1, 99);
-            }
-
             result.Add(firstNum);
             result.Add(secondNum);
 
@@ -69,6 +70,11 @@
                 Console.WriteLine("Invalid Difficulty! \n");
                 return GetDifficulty();
             }
+        }
+
+        internal static void AddHistory(List<string> currentGameHistory)
+        {
+            fullGameHistory.Add(currentGameHistory);
         }
     }
 }
